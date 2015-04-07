@@ -1,0 +1,6 @@
+<div id="first" class="rightContent" ng-show="usernameSet">
+	<ul class="messages">
+		<li ng-repeat="chat in chats | filter:{chatroom: 1}">{{chat.name}}: {{chat.message}}</li>
+	</ul>
+	<input  type="text" id="chatInput" class='chatInput' placeholder='Type Here!' ng-model='chatmessage' ng-keypress="keyboardEnter($event)"/>
+</div>

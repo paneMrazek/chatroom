@@ -1,0 +1,28 @@
+
+> chatroom@0.0.0 start /home/ec2-user/chatroom
+> node ./bin/www
+
+{ [Error: Cannot find module '../build/Release/bson'] code: 'MODULE_NOT_FOUND' }
+js-bson: Failed to load c++ bson extension, using pure JS version
+{ [Error: Cannot find module '../build/Release/bson'] code: 'MODULE_NOT_FOUND' }
+js-bson: Failed to load c++ bson extension, using pure JS version
+{ [Error: Cannot find module '../build/Release/bson'] code: 'MODULE_NOT_FOUND' }
+js-bson: Failed to load c++ bson extension, using pure JS version
+{ [Error: Cannot find module '../build/Release/bson'] code: 'MODULE_NOT_FOUND' }
+js-bson: Failed to load c++ bson extension, using pure JS version
+[0mGET / [32m200 [0m17.680 ms - 3364[0m
+[0mGET / [32m200 [0m5.392 ms - 3364[0m
+[0mGET /public/stylesheets/style.css [32m200 [0m4.483 ms - 1196[0m
+[0mGET /public/javascripts/services.js [32m200 [0m1.463 ms - 1084[0m
+[0mGET /public/javascripts/main.js [36m304 [0m1.572 ms - -[0m
+[0mGET /node_modules/socket.io/node_modules/socket.io-client/socket.io.js [32m200 [0m252.424 ms - 173966[0m
+[0mGET /socket.io?EIO=3&transport=polling&t=1428353177353-0/ [31m500 [0m3.039 ms - 279[0m
+[0mGET /favicon.ico [31m500 [0m1.381 ms - 183[0m
+[0mGET /favicon.ico [31m500 [0m0.944 ms - 183[0m
+user connected
+[0mGET / [32m200 [0m2.029 ms - 3364[0m
+[0mGET /cityweather.html [31m500 [0m1.445 ms - 193[0m
+[0mGET / [32m200 [0m0.818 ms - 3364[0m
+[0mGET /favicon.ico [31m500 [0m0.811 ms - 183[0m
+[0mGET /tmUnblock.cgi [31m500 [0m1.349 ms - 187[0m
+[0mGET / [32m200 [0m1.522 ms - 3364[0m

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<link rel='stylesheet' href='/public/stylesheets/style.css' />
+	</head>
+	<body ng-app="chatroom" ng-controller="MainCtrl">
+		<h2 ng-model="selRoom" style="margin-left:auto; margin-right:auto;width:800px;">{{selRoom.name}}</h2>
+		<div class="content">
+			<div class="leftContent">
+				<ul>
+					<li ng-repeat="room in rooms" ng-click="changeRoom(room);" style="cursor:pointer;"><a ng-href="{{room.room}}">{{room.name}}</a></li>
+				</ul>
+				<button style="margin-left: 25px;"ng-click="showhide.usernameSet = false; showhide.administration = true;" ng-hide="showhide.login">Admin</button>
+			</div>
+			<!-- <ui-view></ui-view> -->
+			<div id="first" class="rightContent" ng-show="showhide.usernameSet">
+				<ul class="messages">
+					<li ng-repeat="chat in chats" ng-if="chat.room == selRoom.id">{{chat.name}}: {{chat.message}}</li>
+				</ul>
+				<input  type="text" id="chatInput" class='chatInput' placeholder='Type Here!' ng-model='chatmessage' ng-keypress="keyboardEnter($event)"/>
+			</div>
+			<div class="login page rightContent" ng-show="showhide.login">
+				<div class="form">
+					<h3 class="title">What's your nickname?</h3>
+					<input class="usernameInput" type="text" maxlength="14" ng-model="usernameInput" ng-keypress="keyboardEnter($event)" autofocus/>
+				</div>
+			</div>
+			<div class='rightContent' ng-show="showhide.administration">
+				<p style="margin-left: 15px; font-size:24px; font-weight:bold;" ng-show="usersList.length > 0">Currently Connected Users - {{usersList.length}}</p>
+				<ol>
+					<li ng-repeat="u in usersList" ng-show="usersList.length > 0">{{u}}</li>
+				</ol>
+				<p style="margin-left: 15px; font-size:24px; font-weight:bold;" ng-show="iua">{{iua}}</p>
+			</div>
+		</div>
+		<div style="margin-left:auto; margin-right:auto;width:800px; padding:15px 0px;background-color:rgb(211, 211, 211); margin-top:5px;" ng-show="showhide.administration">
+			<div style="margin:0px 15px">
+				Name: <input type='text' ng-model="adminAuth" />
+				Password: <input type='password' ng-model="adminPass" />
+				<button ng-click='getUsersList(adminAuth, adminPass);'>Get Users</button>
+				<button ng-click="showhide.usernameSet = true; showhide.administration = false;" style="float:right;">Done</button>
+			</div>
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
+		<script src="/public/javascripts/main.js"></script>
+		<script src="/public/javascripts/services.js"></script>
+
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="/node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+		<script type="text/javascript">
+			var idleTime = 0;
+			$(document).ready(function () {
+				//Increment the idle time counter every minute.
+				var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+				//Zero the idle timer on mouse movement.
+				$(this).mousemove(function (e) {
+					idleTime = 0;
+				});
+				$(this).keypress(function (e) {
+					idleTime = 0;
+				});
+			});
+
+			function timerIncrement() {
+				idleTime = idleTime + 1;
+				console.log('time', idleTime);
+				if (idleTime > 29) { // 20 minutes
+					window.location.reload();
+				}
+			}
+			</script> 
+	</body>
+</html>

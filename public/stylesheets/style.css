@@ -1,0 +1,83 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.rightContent ul{
+	list-style: none;
+}
+
+.messages{
+	height:calc(100% - 60px);
+	margin: 0;
+	overflow-y: scroll;
+	padding: 0px 20px 0px 20px;
+}
+.content{
+	margin:auto;
+	margin-right:auto;
+	margin-left:auto;
+	width:800px;
+	height:500px;
+}
+.leftContent{
+	width: 150px;
+	height: 100%;
+	float: left;
+	background-color: rgb(216, 216, 216);
+}
+.rightContent{
+	width:calc(100% - 150px);
+	height:100%;
+	margin-left: 150px;
+}
+.chatArea {
+	height: 100%;
+	padding-bottom: 60px;
+}
+
+.chatInput {
+	height: 54px;
+	padding-left: 10px;
+	width: calc(100% - 14px);
+}
+
+.login.page {
+	background-color: #000;
+}
+
+.login.page .form {
+	height: 100px;
+	position: relative;
+	text-align: center;
+	top: 50%;
+	width: 100%;
+}
+
+.login.page .form .usernameInput {
+	background-color: transparent;
+	border: none;
+	border-bottom: 2px solid #fff;
+	outline: none;
+	padding-bottom: 15px;
+	text-align: center;
+	width: 400px;
+}
+
+.login.page .title {
+	font-size: 200%;
+}
+
+.login.page .usernameInput {
+	font-size: 200%;
+	letter-spacing: 3px;
+}
+
+.login.page .title, .login.page .usernameInput {
+	color: #fff;
+	font-weight: 100;
+}

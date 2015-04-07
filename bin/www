@@ -1,0 +1,160 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('chatroom:server');
+var http = require('http');
+var MongoClient = require('mongodb').MongoClient;
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '80');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+var io = require('socket.io').listen(server.listen(port));
+server.on('error', onError);
+server.on('listening', onListening);
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+	var port = parseInt(val, 10);
+
+	if (isNaN(port)) {
+		// named pipe
+		return val;
+	}
+
+	if (port >= 0) {
+		// port number
+		return port;
+	}
+
+	return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+	if (error.syscall !== 'listen') {
+		throw error;
+	}
+
+	var bind = typeof port === 'string'
+		? 'Pipe ' + port
+		: 'Port ' + port;
+
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+		case 'EACCES':
+			console.error(bind + ' requires elevated privileges');
+			process.exit(1);
+			break;
+		case 'EADDRINUSE':
+			console.error(bind + ' is already in use');
+			process.exit(1);
+			break;
+		default:
+			throw error;
+	}
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+	var addr = server.address();
+	var bind = typeof addr === 'string'
+		? 'pipe ' + addr
+		: 'port ' + addr.port;
+	debug('Listening on ' + bind);
+}
+
+function getNames(obj) {
+		var key;
+		var names = [];
+		for (key in obj) {
+			if (obj.hasOwnProperty(key)){
+			 	names.push(key);
+			}
+		}
+		return names;
+	};
+
+var usernames = {};
+
+io.on("connection", function(socket){
+	var addedUser = false;
+	console.log("user connected");
+
+	socket.on('new message', function(data){
+		socket.broadcast.emit('new message', {
+			name: socket.username,
+			message: data.message,
+			room: data.room
+		});
+	});
+
+	socket.on('add user', function(data){
+		socket.username = data.name;
+		usernames[socket.username] = data.name;
+		addedUser = true;
+
+		socket.emit('login',{
+			name: socket.username,
+			room: data.room
+		});
+
+		socket.broadcast.emit('user joined',{
+			name: socket.username,
+			room: data.room
+		});
+
+		var n = getNames(usernames);
+		MongoClient.connect('mongodb://localhost/', function(err, db){
+			var mydb = db.db('chatroom');
+			mydb.collection('users', function(err, users){
+				users.update({'title':'users'},{$set:{'names':n}});
+			});
+		});
+	});
+
+	socket.on('disconnect', function(){
+		if(addedUser){
+			delete usernames[socket.username];
+
+			var n = getNames(usernames);
+			MongoClient.connect('mongodb://localhost/', function(err, db){
+				var mydb = db.db('chatroom');
+				mydb.collection('users', function(err, users){
+					users.update({'title':'users'},{$set:{'names':n}});
+				});
+			});
+
+			socket.broadcast.emit('user left', {
+				name: socket.username
+			});
+		}
+	});
+});
